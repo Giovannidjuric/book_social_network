@@ -1,7 +1,10 @@
 package com.books.book.email;
 
+import com.books.book.auth.AuthenticationRequest;
+import com.books.book.auth.AuthenticationResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -48,7 +51,7 @@ public class EmailService {
         Map<String, Object> properties = new HashMap<>();
         properties.put("username", username);
         properties.put("confirmationUrl", confirmationUrl);
-        properties.put("activationCode", activationCode);
+        properties.put("activation_code", activationCode);
         Context context = new Context();
         context.setVariables(properties);
 
@@ -60,6 +63,4 @@ public class EmailService {
         helper.setText(template, true);
         mailSender.send(mimeMessage);
     }
-
-
 }
