@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -29,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
-        final String authentication = request.getHeader("Authentication");
+        final String authorization = request.getHeader("Authorization");
         final String userEmail;
         final String jwt;
 
@@ -37,8 +38,9 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         System.out.println("request.getServletPath(): " + request.getServletPath());
-        jwt = authentication.substring(7);
+        jwt = authorization.substring(7);
         userEmail = jwtService.extractUsername(jwt);
 
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){

@@ -34,9 +34,10 @@ public class JwtService {
 
     private String buildToken (Map<String, Object> claims, UserDetails userDetails, Long jwtExpiration) {
         var authorities = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        System.out.println("userDetails.getUsername(): " + userDetails.getUsername());
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
                 .setClaims(claims)
+                .setSubject(userDetails.getUsername())
                 .claim("Authorities", authorities)
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -46,6 +47,7 @@ public class JwtService {
 
     public Boolean isTokenValid(String token, UserDetails userDetails){
         String username = extractUsername(token);
+
         return (userDetails.getUsername().equals(username) && !isTokenExpired(token));
     }
 

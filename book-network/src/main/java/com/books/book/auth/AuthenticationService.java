@@ -117,6 +117,7 @@ public class AuthenticationService {
         }
 
         User user = (User) auth.getPrincipal();
+        System.out.println("user.getUsername(): " + user.getUsername());
         Map<String, Object> claims = new HashMap<>();
         claims.put("fullname", user.fullName());
         String token = jwtService.generateToken(claims, user);

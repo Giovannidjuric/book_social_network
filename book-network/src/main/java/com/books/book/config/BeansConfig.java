@@ -4,6 +4,7 @@ import com.books.book.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -39,5 +40,10 @@ public class BeansConfig {
         } catch (Exception e) {
             throw new RuntimeException("ErrorMessage: " + e.getMessage());
         }
+    }
+
+    @Bean
+    public AuditorAware<String> auditAware(){
+        return new ApplicationAuditAware();
     }
 }
