@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 @Getter
 @Setter
@@ -33,6 +34,20 @@ public class Book extends BaseEntity {
 
     @OneToMany(mappedBy = "book")
     private List<BookTransactionHistory> bookTransactionHistories;
+
+    @Transient
+    public double getRate(){
+        if(feedbacks.isEmpty()){
+            return 0.0;
+        }
+
+        var rate = feedbacks.stream()
+                .mapToDouble(Feedback::getNote)
+                .average()
+                .orElse(0.0);
+
+        return (double) Math.round(rate * 10) / 10;
+    }
 
 }
 
